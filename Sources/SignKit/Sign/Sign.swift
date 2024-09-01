@@ -2,49 +2,57 @@ import Foundation
 
 public struct Sign {
     
-    public static func login(
+    public static let shared = Sign()
+    
+    public let store: UserDefaultsStore
+    
+    public init(store: UserDefaultsStore = .shared) {
+        self.store = store
+    }
+    
+    public func login(
         id: String,
         password: String,
         accessToken: String,
         refreshToken: String
     ) {
-        UserDefaultsStore.set(id, for: "id")
+        store.set(id, for: "id")
         KeychainStore.set(password, for: id)
-        UserDefaultsStore.set(accessToken, for: "accessToken")
+        store.set(accessToken, for: "accessToken")
         KeychainStore.set(refreshToken, for: "refreshToken")
     }
     
-    public static func logout() {
+    public func logout() {
         if let id {
             KeychainStore.delete(key: id)
         }
-        UserDefaultsStore.delete(key: "id")
-        UserDefaultsStore.delete(key: "accessToken")
+        store.delete(key: "id")
+        store.delete(key: "accessToken")
         KeychainStore.delete(key: "refreshToken")
     }
     
-    public static func reissue(_ accessToken: String) {
-        UserDefaultsStore.set(accessToken, for: "accessToken")
+    public func reissue(_ accessToken: String) {
+        store.set(accessToken, for: "accessToken")
     }
     
-    public static var isLoggedIn: Bool {
+    public var isLoggedIn: Bool {
         id != nil
     }
     
-    public static var id: String? {
-        try? UserDefaultsStore.read(key: "id")
+    public var id: String? {
+        try? store.read(key: "id")
     }
     
-    public static var password: String? {
+    public var password: String? {
         guard let id else { return nil }
         return try? KeychainStore.read(key: id)
     }
     
-    public static var accessToken: String? {
-        try? UserDefaultsStore.read(key: "accessToken")
+    public var accessToken: String? {
+        try? store.read(key: "accessToken")
     }
     
-    public static var refreshToken: String? {
+    public var refreshToken: String? {
         try? KeychainStore.read(key: "refreshToken")
     }
 }
