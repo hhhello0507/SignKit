@@ -15,7 +15,8 @@ public struct KeychainStore {
         }
     }
     
-    public static func set(_ value: String, for key: String) {
+    public static func set(_ value: String?, for key: String) {
+        guard let value else { return }
         do {
             try create(value, for: key)
         } catch {

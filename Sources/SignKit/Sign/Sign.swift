@@ -13,8 +13,8 @@ public struct Sign {
     public func login(
         id: String,
         password: String,
-        accessToken: String,
-        refreshToken: String
+        accessToken: String?,
+        refreshToken: String?
     ) {
         store.set(id, for: "id")
         KeychainStore.set(password, for: id)
