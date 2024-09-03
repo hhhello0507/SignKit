@@ -31,7 +31,7 @@ public struct Sign {
         KeychainStore.delete(key: "refreshToken")
     }
     
-    public func reissue(_ accessToken: String) {
+    public func reissue(_ accessToken: String?) {
         store.set(accessToken, for: "accessToken")
     }
     

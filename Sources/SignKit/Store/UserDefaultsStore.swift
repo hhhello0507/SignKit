@@ -10,7 +10,7 @@ public struct UserDefaultsStore {
         self.userDefaults = userDefaults
     }
     
-    public func set(_ value: String, for key: String) {
+    public func set(_ value: String?, for key: String) {
         userDefaults.set(value, forKey: key)
     }
     
